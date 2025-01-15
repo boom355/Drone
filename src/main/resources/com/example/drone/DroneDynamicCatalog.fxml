@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.drone.Frontend.DroneDynamicsController">
+    <VBox spacing="10" alignment="CENTER">
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Enter Drone ID:"/>
+            <TextField fx:id="droneIdInput" promptText="Drone ID"/>
+            <Button text="Fetch Data" onAction="#onFetchDataClicked"/>
+        </HBox>
+        <TextArea fx:id="droneDataDisplay" editable="false" prefWidth="600" prefHeight="400"/>
+    </VBox>
+</StackPane>

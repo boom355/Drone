@@ -1,40 +1,42 @@
 package com.example.drone.Backend;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
 public class Api {
-    private static final String TOKEN = "Token 28c5253fd117e5e5a96c3684ee61155190899907";
 
-    private Api() {}
+    // Token for Authentication
+    private static final String TOKEN = "Token 28c5253fd117e5e5a96c3684ee61155190899907"; // Your token here
 
-    private static HttpURLConnection createConnection(String endpoint) throws IOException, URISyntaxException {
-        URI uri = new URI(endpoint);
-        HttpURLConnection con = (HttpURLConnection) uri.toURL().openConnection();
-        con.setRequestProperty("Authorization", TOKEN);
-        con.setRequestMethod("GET");
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        return con;
-    }
+    public static String fetchData(String urlString) throws Exception {
+        // Create URL object
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-    public static String fetchData(String endpoint) throws IOException, URISyntaxException {
-        HttpURLConnection con = createConnection(endpoint);
-        int responseCode = con.getResponseCode();
+        // Set the HTTP method to GET
+        connection.setRequestMethod("GET");
+
+        // Add Authorization header with the token
+        connection.setRequestProperty("Authorization", TOKEN);
+
+        // Open connection and get the response
+        int responseCode = connection.getResponseCode();
         if (responseCode != HttpURLConnection.HTTP_OK) {
-            throw new IOException("Failed to fetch data. HTTP response code: " + responseCode);
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
         }
 
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-            }
-            return response.toString();
+        // Read the response
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
+        in.close();
+
+        return response.toString(); // Return response as a string
     }
 }

@@ -21,39 +21,6 @@ public class DroneTypesEntry {
         this.maxCarriage = maxCarriage;
     }
 
-    // Getters for fields
-    public String getId() {
-        return id;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public String getTypename() {
-        return typename;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public double getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public double getBatteryCapacity() {
-        return batteryCapacity;
-    }
-
-    public double getControlRange() {
-        return controlRange;
-    }
-
-    public double getMaxCarriage() {
-        return maxCarriage;
-    }
-
     @Override
     public String toString() {
         return "ID: " + id + ", Manufacturer: " + manufacturer + ", Typename: " + typename +

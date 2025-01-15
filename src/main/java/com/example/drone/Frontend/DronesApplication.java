@@ -14,9 +14,7 @@ public class DronesApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/drone/DronesCatalog.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-       // Set the controller's stage
-        MainMenuController controller = fxmlLoader.getController();
-        controller.setStage(stage);
+
 
         stage.setTitle("Drone Management");
         stage.setScene(scene);

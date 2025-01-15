@@ -9,33 +9,25 @@ import java.util.List;
 public class DroneTypes {
     private static final String BASE_URL = "http://dronesim.facets-labs.com/api/dronetypes/?format=json";
 
-    /**
-     * Fetches drone types and returns a list of readable strings.
-     *
-     * @return List of drone types in "Manufacturer: Typename" format.
-     */
+
     public List<String> fetchDroneTypes() {
-        List<String> droneTypeList = new ArrayList<>();
+        List<String> droneTypesList = new ArrayList<>();
         try {
             String response = Api.fetchData(BASE_URL);
             List<DroneTypesEntry> droneEntries = processCatalogData(response);
 
-            // Convert DroneTypesEntry objects into readable strings
+            // Convert DroneTypesEntry objects to their string representation
             for (DroneTypesEntry entry : droneEntries) {
-                droneTypeList.add(entry.getManufacturer() + ": " + entry.getTypename());
+                droneTypesList.add(entry.toString());
             }
         } catch (Exception e) {
             System.err.println("Error fetching drone catalog: " + e.getMessage());
         }
-        return droneTypeList;
+        return droneTypesList;
     }
 
-    /**
-     * Processes the JSON response and creates a list of DroneTypesEntry objects.
-     *
-     * @param jsonResponse JSON string from the API.
-     * @return List of DroneTypesEntry objects.
-     */
+
+
     private List<DroneTypesEntry> processCatalogData(String jsonResponse) {
         List<DroneTypesEntry> droneList = new ArrayList<>();
         JSONObject responseObject = new JSONObject(jsonResponse);

@@ -1,9 +1,9 @@
 package com.example.drone.Frontend;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
@@ -17,27 +17,31 @@ public class MainMenuController {
 
     @FXML
     public void goToDrones() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/drone/DronesCatalog.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.setTitle("Drones");
+        navigateTo("/com/example/drone/DronesCatalog.fxml", "Drones");
     }
 
     @FXML
     public void goToDroneTypes() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/drone/DroneTypesCatalog.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.setTitle("Drone Types");
+        navigateTo("/com/example/drone/DroneTypesCatalog.fxml", "Drone Types");
     }
 
     @FXML
     public void goToDroneDynamics() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/drone/DroneDynamicsCatalog.fxml"));
+        navigateTo("/com/example/drone/DroneDynamicsCatalog.fxml", "Drone Dynamics");
+    }
+
+    private void navigateTo(String fxmlPath, String title) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
         Scene scene = new Scene(fxmlLoader.load());
+
+        // Pass the stage to the controller of the next scene (optional)
+        Object controller = fxmlLoader.getController();
+        if (controller instanceof MainMenuController nextController) {
+            nextController.setStage(stage);
+        }
+
         stage.setScene(scene);
-        stage.setTitle("Drone Dynamics");
-
-
+        stage.setTitle(title);
+        stage.show();
     }
 }
