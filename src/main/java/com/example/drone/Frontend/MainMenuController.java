@@ -27,7 +27,7 @@ public class MainMenuController {
 
     @FXML
     public void goToDroneDynamics() throws IOException {
-        navigateTo("/com/example/drone/DroneDynamicsCatalog.fxml", "Drone Dynamics");
+        navigateTo("/com/example/drone/DroneDynamicCatalog.fxml", "Drone Dynamics");
     }
 
     private void navigateTo(String fxmlPath, String title) throws IOException {

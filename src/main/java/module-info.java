@@ -9,6 +9,7 @@ module com.example.drone {
     opens com.example.drone.Frontend to javafx.fxml;
     exports com.example.drone.Frontend;
     exports com.example.drone.Backend;
+    opens com.example.drone.Backend to javafx.fxml;
 
 
 }

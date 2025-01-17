@@ -1,12 +1,12 @@
 package com.example.drone.Backend;
 
 public class DronesEntry {
-    private final String id;
-    private final String droneType;
-    private final String createdDate;
-    private final String serialNumber;
-    private final double carriageWeight;
-    private final String carriageType;
+    final String id; // Package-private
+    final String droneType; // Package-private
+    final String createdDate; // Package-private
+    final String serialNumber; // Package-private
+    final double carriageWeight; // Package-private
+    final String carriageType; // Package-private
 
     public DronesEntry(String id, String droneType, String createdDate, String serialNumber, double carriageWeight, String carriageType) {
         this.id = id;

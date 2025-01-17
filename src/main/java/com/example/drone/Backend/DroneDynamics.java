@@ -20,22 +20,32 @@ public class DroneDynamics {
         List<DroneDynamicEntry> droneDynamicsList = new ArrayList<>();
         String url = BASE_URL + "&drone=" + droneId;
 
+        // Fetch the data with token
         String response = fetchDataWithToken(url);
 
+        // Parse the JSON response
         JSONObject responseObject = new JSONObject(response);
         JSONArray resultsArray = responseObject.getJSONArray("results");
 
+        // Loop through the results array and create entries for each
         for (int i = 0; i < resultsArray.length(); i++) {
-            JSONObject entry = resultsArray.getJSONObject(i);
+            JSONObject entry = resultsArray.getJSONObject(i); // Loop through all entries
 
             String timestamp = entry.optString("timestamp", "Unknown");
             int speed = entry.optInt("speed", 0);
-            double longitude = entry.optDouble("longitude", 0.0);
-            double latitude = entry.optDouble("latitude", 0.0);
+            double alignRoll = Double.parseDouble(entry.optString("align_roll", "0.0"));
+            double controlRange = Double.parseDouble(entry.optString("control_range", "0.0"));  // Extract the 'control_range' value
+            double alignYaw = Double.parseDouble(entry.optString("align_yaw", "0.0"));
+            double longitude = Double.parseDouble(entry.optString("longitude", "0.0"));
+            double latitude = Double.parseDouble(entry.optString("latitude", "0.0"));
             int batteryStatus = entry.optInt("battery_status", 0);
+            String lastSeen = entry.optString("last_seen", "Unknown"); // Correctly fetch 'last_seen'
             String status = entry.optString("status", "Unknown");
 
-            DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(timestamp, speed, longitude, latitude, batteryStatus, status);
+            // Create a DroneDynamicEntry object and add it to the list
+            DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(
+                    timestamp, speed,  alignRoll, 0.0, alignYaw, longitude, latitude, batteryStatus, status, lastSeen, controlRange
+            );
             droneDynamicsList.add(dynamicEntry);
         }
 
