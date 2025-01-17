@@ -1,13 +1,14 @@
 package com.example.drone.Backend;
 
 public class DronesEntry {
-    final String id; // Package-private
-    final String droneType; // Package-private
-    final String createdDate; // Package-private
-    final String serialNumber; // Package-private
-    final double carriageWeight; // Package-private
-    final String carriageType; // Package-private
+    private final String id;
+    private final String droneType;
+    private final String createdDate;
+    private final String serialNumber;
+    private final double carriageWeight;
+    private final String carriageType;
 
+    // Constructor
     public DronesEntry(String id, String droneType, String createdDate, String serialNumber, double carriageWeight, String carriageType) {
         this.id = id;
         this.droneType = droneType;
@@ -15,6 +16,31 @@ public class DronesEntry {
         this.serialNumber = serialNumber;
         this.carriageWeight = carriageWeight;
         this.carriageType = carriageType;
+    }
+
+    // Getters
+    public String getId() {
+        return id;
+    }
+
+    public String getDroneType() {
+        return droneType;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public double getCarriageWeight() {
+        return carriageWeight;
+    }
+
+    public String getCarriageType() {
+        return carriageType;
     }
 
     @Override

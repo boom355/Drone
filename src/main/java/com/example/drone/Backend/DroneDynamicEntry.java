@@ -13,7 +13,7 @@ public class DroneDynamicEntry {
     private final String status;
 
     // Constructor to initialize all fields, including lastSeen and controlRange
-    public DroneDynamicEntry(String timestamp, int speed, double alignRoll, double alignPitch, double alignYaw,
+    public DroneDynamicEntry(String timestamp, int speed, double alignRoll, double alignYaw,
                              double longitude, double latitude, int batteryStatus, String status, String lastSeen,
                              double controlRange) {
         this.timestamp = timestamp;

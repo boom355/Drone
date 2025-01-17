@@ -19,7 +19,6 @@ public class DroneDynamics {
     public List<DroneDynamicEntry> fetchDroneDataById(String droneId) throws Exception {
         List<DroneDynamicEntry> droneDynamicsList = new ArrayList<>();
         String url = BASE_URL + "&drone=" + droneId;
-
         // Fetch the data with token
         String response = fetchDataWithToken(url);
 
@@ -44,7 +43,7 @@ public class DroneDynamics {
 
             // Create a DroneDynamicEntry object and add it to the list
             DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(
-                    timestamp, speed,  alignRoll, 0.0, alignYaw, longitude, latitude, batteryStatus, status, lastSeen, controlRange
+                    timestamp, speed,  alignRoll, alignYaw, longitude, latitude, batteryStatus, status, lastSeen, controlRange
             );
             droneDynamicsList.add(dynamicEntry);
         }
