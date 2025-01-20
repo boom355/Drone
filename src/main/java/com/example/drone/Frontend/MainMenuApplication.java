@@ -1,6 +1,5 @@
-package com.example.drone;
+package com.example.drone.Frontend;
 
-import com.example.drone.Frontend.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +17,7 @@ public class MainMenuApplication extends Application {
 
         // Pass the stage to the MainMenuController
         MainMenuController controller = fxmlLoader.getController();
-        controller.setStage(stage);  // Pass the stage to the MainMenuController
+        controller.setStage(stage);  // This ensures the stage is properly set
 
         // Set the scene and show the stage
         stage.setTitle("Main Menu");
@@ -30,3 +29,4 @@ public class MainMenuApplication extends Application {
         launch();
     }
 }
+

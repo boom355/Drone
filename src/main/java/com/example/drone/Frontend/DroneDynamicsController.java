@@ -2,8 +2,10 @@ package com.example.drone.Frontend;
 
 import com.example.drone.Backend.DroneDynamicEntry;
 import com.example.drone.Backend.DroneDynamics;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.util.List;
@@ -11,61 +13,35 @@ import java.util.List;
 public class DroneDynamicsController {
 
     @FXML
-    private TextField droneIdInput;
+    private TextField droneIdField;
 
     @FXML
-    private TextArea droneDataDisplay;
+    private ListView<String> dynamicsListView;
 
     private final DroneDynamics droneDynamics = new DroneDynamics();
 
     @FXML
-    private void onFetchDataClicked() {
-        String droneId = droneIdInput.getText().trim();
+    private void fetchDynamics() {
+        String droneId = droneIdField.getText().trim();
 
         if (droneId.isEmpty()) {
-            droneDataDisplay.setText("Please enter a valid Drone ID.");
+            dynamicsListView.getItems().add("Please enter a drone ID.");
             return;
         }
 
         try {
-            // Fetch the drone dynamics data by drone ID
-            List<DroneDynamicEntry> dynamicsData = droneDynamics.fetchDroneDataById(droneId);
+            List<DroneDynamicEntry> dynamics = droneDynamics.fetchDroneDataById(droneId);
+            ObservableList<String> dynamicsData = FXCollections.observableArrayList();
 
-            if (dynamicsData.isEmpty()) {
-                droneDataDisplay.setText("No data found for Drone ID: " + droneId);
-            } else {
-                StringBuilder displayText = new StringBuilder();
-
-                // Iterate through the retrieved drone data and display it
-                for (DroneDynamicEntry entry : dynamicsData) {
-                    // Normalize battery status
-                    int batteryStatus = entry.getBatteryStatus();
-                    double normalizedBatteryStatus = (batteryStatus / 42.8);  // Adjust this value based on your data
-
-                    // If controlRange or yaw is missing, use default value
-                    double controlRange = entry.getControlRange() != 0.0 ? entry.getControlRange() : 0.0;
-                    double yaw = entry.getAlignYaw() != 0.0 ? entry.getAlignYaw() : 0.0;
-                    double roll = entry.getAlignRoll() != 0.0 ? entry.getAlignRoll() : 0.0;
-
-                    // Display data
-                    displayText.append("Timestamp: ").append(entry.getTimestamp()).append("\n")
-                            .append("Speed: ").append(entry.getSpeed()).append(" km/h\n")
-                            .append("align_roll: ").append(roll).append("\n")
-                            .append("Control Range: ").append(controlRange).append(" meters\n")
-                            .append("align_yaw: ").append(yaw).append("\n")
-                            .append("Longitude: ").append(entry.getLongitude()).append("\n")
-                            .append("Latitude: ").append(entry.getLatitude()).append("\n")
-                            .append("Battery: ").append(normalizedBatteryStatus).append("%\n")
-                            .append("Last Seen: ").append(entry.getLastSeen()).append("\n")
-                            .append("Status: ").append(entry.getStatus()).append("\n\n");
-                }
-
-                // Set the formatted text in the TextArea
-                droneDataDisplay.setText(displayText.toString());
+            for (DroneDynamicEntry entry : dynamics) {
+                dynamicsData.add("Timestamp: " + entry.getTimestamp() + ", Speed: " + entry.getSpeed() +
+                        ", Battery: " + entry.getBatteryStatus() + ", align_roll: " + entry.getAlignRoll() +
+                        ", controlRange: " + entry.getControlRange() + ", align_yaw: " + entry.getAlignYaw());
             }
+
+            dynamicsListView.setItems(dynamicsData);
         } catch (Exception e) {
-            // Display error message in case of any exception
-            droneDataDisplay.setText("Error fetching drone data: " + e.getMessage());
+            dynamicsListView.getItems().add("Error fetching dynamics for drone ID: " + droneId);
         }
     }
 }

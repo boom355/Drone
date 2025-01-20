@@ -1,5 +1,4 @@
 package com.example.drone.Backend;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,47 +16,44 @@ public class DroneDynamics {
 
     // Fetch drone dynamics for a specific drone ID
     public List<DroneDynamicEntry> fetchDroneDataById(String droneId) throws Exception {
-        List<DroneDynamicEntry> droneDynamicsList = new ArrayList<>();
         String url = BASE_URL + "&drone=" + droneId;
-        // Fetch the data with token
-        String response = fetchDataWithToken(url);
-
-        // Parse the JSON response
-        JSONObject responseObject = new JSONObject(response);
-        JSONArray resultsArray = responseObject.getJSONArray("results");
-
-        // Loop through the results array and create entries for each
-        for (int i = 0; i < resultsArray.length(); i++) {
-            JSONObject entry = resultsArray.getJSONObject(i); // Loop through all entries
-
-            String timestamp = entry.optString("timestamp", "Unknown");
-            int speed = entry.optInt("speed", 0);
-            double alignRoll = Double.parseDouble(entry.optString("align_roll", "0.0"));
-            double controlRange = Double.parseDouble(entry.optString("control_range", "0.0"));  // Extract the 'control_range' value
-            double alignYaw = Double.parseDouble(entry.optString("align_yaw", "0.0"));
-            double longitude = Double.parseDouble(entry.optString("longitude", "0.0"));
-            double latitude = Double.parseDouble(entry.optString("latitude", "0.0"));
-            int batteryStatus = entry.optInt("battery_status", 0);
-            String lastSeen = entry.optString("last_seen", "Unknown"); // Correctly fetch 'last_seen'
-            String status = entry.optString("status", "Unknown");
-
-            // Create a DroneDynamicEntry object and add it to the list
-            DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(
-                    timestamp, speed,  alignRoll, alignYaw, longitude, latitude, batteryStatus, status, lastSeen, controlRange
-            );
-            droneDynamicsList.add(dynamicEntry);
-        }
-
-        return droneDynamicsList;
+        String jsonResponse = fetchDataWithToken(url); // Use token-based fetching
+        return processDynamicData(jsonResponse);
     }
 
+    // Process JSON response into a list of DroneDynamicEntry objects
+    private List<DroneDynamicEntry> processDynamicData(String jsonResponse) {
+        List<DroneDynamicEntry> dynamicsList = new ArrayList<>();
+        JSONObject responseObject = new JSONObject(jsonResponse);
+        JSONArray resultsArray = responseObject.getJSONArray("results");
+
+        for (int i = 0; i < resultsArray.length(); i++) {
+            JSONObject entry = resultsArray.getJSONObject(i);
+            DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(
+                    entry.optString("timestamp", "Unknown"),
+                    entry.optInt("speed", 0),
+                    entry.optDouble("align_roll", 0.0),
+                    entry.optDouble("align_yaw", 0.0),
+                    entry.optDouble("longitude", 0.0),
+                    entry.optDouble("latitude", 0.0),
+                    entry.optInt("battery_status", 0),
+                    entry.optString("status", "Unknown"),
+                    entry.optString("last_seen", "Unknown"),
+                    entry.optDouble("control_range", 0.0)
+            );
+            dynamicsList.add(dynamicEntry);
+        }
+        return dynamicsList;
+    }
+
+    // Make an HTTP GET request with token-based authorization
     private String fetchDataWithToken(String url) throws Exception {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestProperty("Authorization", DroneDynamics.TOKEN);
+        connection.setRequestProperty("Authorization", TOKEN);
         connection.setRequestMethod("GET");
 
         int responseCode = connection.getResponseCode();
-        if (responseCode == 200) {
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200 OK
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 StringBuilder response = new StringBuilder();
                 String line;
@@ -70,4 +66,4 @@ public class DroneDynamics {
             throw new Exception("HTTP Error: " + responseCode);
         }
     }
-}
+} 
