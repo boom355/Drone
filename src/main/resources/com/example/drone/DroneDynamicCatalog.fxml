@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.drone.Frontend.DronesController">
-    <ListView fx:id="dronesListView" prefHeight="200.0" prefWidth="400.0"/>
-    <TextArea fx:id="droneDynamicsDisplay" prefHeight="200.0" prefWidth="400.0" editable="false"/>
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.drone.Frontend.DroneDynamicsController"
+      alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+    <TextField fx:id="droneIdField" promptText="Enter Drone ID" />
+    <Button text="Fetch Dynamics" onAction="#fetchDynamics" />
+    <ListView fx:id="dynamicsListView" prefHeight="300.0" prefWidth="400.0" />
 </VBox>

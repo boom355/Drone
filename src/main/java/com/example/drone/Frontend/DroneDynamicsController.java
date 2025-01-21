@@ -32,16 +32,26 @@ public class DroneDynamicsController {
         try {
             List<DroneDynamicEntry> dynamics = droneDynamics.fetchDroneDataById(droneId);
             ObservableList<String> dynamicsData = FXCollections.observableArrayList();
-
-            for (DroneDynamicEntry entry : dynamics) {
-                dynamicsData.add("Timestamp: " + entry.getTimestamp() + ", Speed: " + entry.getSpeed() +
-                        ", Battery: " + entry.getBatteryStatus() + ", align_roll: " + entry.getAlignRoll() +
-                        ", controlRange: " + entry.getControlRange() + ", align_yaw: " + entry.getAlignYaw());
+            if (dynamics.isEmpty()) {
+                dynamicsListView.getItems().add("No dynamics found for drone ID: " + droneId);
+            } else {
+                for (DroneDynamicEntry entry : dynamics) {
+                    dynamicsData.add("Timestamp: " + entry.getTimestamp() +
+                            ", Speed: " + entry.getSpeed() +
+                            ", Battery: " + entry.getBatteryStatus() +
+                            ", Align Roll: " + entry.getAlignRoll() +
+                            ", Align controlRange: " + entry.getControlRange() +
+                            ", Align Yaw: " + entry.getAlignYaw() +
+                            ", Longitude: " + entry.getLongitude() +
+                            ", Latitude: " + entry.getLatitude() +
+                            ", Status: " + entry.getStatus());
+                }
+                dynamicsListView.setItems(dynamicsData);
             }
-
-            dynamicsListView.setItems(dynamicsData);
         } catch (Exception e) {
             dynamicsListView.getItems().add("Error fetching dynamics for drone ID: " + droneId);
+            e.printStackTrace(); // Print the error for debugging
         }
     }
-}
+    }
+

@@ -1,4 +1,5 @@
 package com.example.drone.Backend;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +18,7 @@ public class DroneDynamics {
     // Fetch drone dynamics for a specific drone ID
     public List<DroneDynamicEntry> fetchDroneDataById(String droneId) throws Exception {
         String url = BASE_URL + "&drone=" + droneId;
-        String jsonResponse = fetchDataWithToken(url); // Use token-based fetching
+        String jsonResponse = fetchDataWithToken(url); // Fetch data from API
         return processDynamicData(jsonResponse);
     }
 
@@ -25,23 +26,28 @@ public class DroneDynamics {
     private List<DroneDynamicEntry> processDynamicData(String jsonResponse) {
         List<DroneDynamicEntry> dynamicsList = new ArrayList<>();
         JSONObject responseObject = new JSONObject(jsonResponse);
-        JSONArray resultsArray = responseObject.getJSONArray("results");
 
-        for (int i = 0; i < resultsArray.length(); i++) {
-            JSONObject entry = resultsArray.getJSONObject(i);
-            DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(
-                    entry.optString("timestamp", "Unknown"),
-                    entry.optInt("speed", 0),
-                    entry.optDouble("align_roll", 0.0),
-                    entry.optDouble("align_yaw", 0.0),
-                    entry.optDouble("longitude", 0.0),
-                    entry.optDouble("latitude", 0.0),
-                    entry.optInt("battery_status", 0),
-                    entry.optString("status", "Unknown"),
-                    entry.optString("last_seen", "Unknown"),
-                    entry.optDouble("control_range", 0.0)
-            );
-            dynamicsList.add(dynamicEntry);
+        // Check if results array exists
+        if (responseObject.has("results")) {
+            JSONArray resultsArray = responseObject.getJSONArray("results");
+
+            for (int i = 0; i < resultsArray.length(); i++) {
+                JSONObject entry = resultsArray.getJSONObject(i);
+
+                DroneDynamicEntry dynamicEntry = new DroneDynamicEntry(
+                        entry.optString("timestamp", "Unknown"),
+                        entry.optInt("speed", 0),
+                        entry.optDouble("align_roll", 0.0),
+                        entry.optDouble("align_yaw", 0.0),
+                        entry.optDouble("longitude", 0.0),
+                        entry.optDouble("latitude", 0.0),
+                        entry.optInt("battery_status", 0),
+                        entry.optString("status", "Unknown"),
+                        entry.optString("last_seen", "Unknown"),
+                        entry.optDouble("control_range", 0.0)
+                );
+                dynamicsList.add(dynamicEntry);
+            }
         }
         return dynamicsList;
     }
@@ -66,4 +72,4 @@ public class DroneDynamics {
             throw new Exception("HTTP Error: " + responseCode);
         }
     }
-} 
+}
