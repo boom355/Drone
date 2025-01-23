@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.drone.Frontend.DroneDynamicsController"
-      alignment="CENTER" spacing="10" style="-fx-padding: 20;">
-    <TextField fx:id="droneIdField" promptText="Enter Drone ID" />
-    <Button text="Fetch Dynamics" onAction="#fetchDynamics" />
-    <ListView fx:id="dynamicsListView" prefHeight="300.0" prefWidth="400.0" />
-</VBox>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.drone.Frontend.DroneDynamicsController">
+    <!-- Layout for the drone dynamics table and navigation buttons -->
+    <TableView fx:id="droneTable" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="780.0">
+        <columns>
+            <TableColumn fx:id="timestampColumn" text="Timestamp" prefWidth="100.0"/>
+            <TableColumn fx:id="speedColumn" text="Speed"/>
+            <TableColumn fx:id="rollColumn" text="Roll"/>
+            <TableColumn fx:id="yawColumn" text="Yaw"/>
+            <TableColumn fx:id="longitudeColumn" text="Longitude" prefWidth="100.0"/>
+            <TableColumn fx:id="latitudeColumn" text="Latitude" prefWidth="100.0"/>
+            <TableColumn fx:id="batteryColumn" text="Battery"/>
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100.0"/>
+            <TableColumn fx:id="lastSeenColumn" text="Last Seen" prefWidth="100.0"/>
+            <TableColumn fx:id="rangeColumn" text="Range"/>
+        </columns>
+    </TableView>
+
+    <HBox layoutX="10.0" layoutY="420.0" spacing="10">
+        <Button fx:id="previousButton" text="Previous" onAction="#onPreviousClicked"/>
+        <Button fx:id="nextButton" text="Next" onAction="#onNextClicked"/>
+    </HBox>
+</AnchorPane>

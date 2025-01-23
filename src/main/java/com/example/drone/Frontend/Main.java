@@ -69,7 +69,7 @@ public class Main {
                 String droneId = scanner.nextLine();
 
                 // Fetch dynamic data for the specific drone
-                List<DroneDynamicEntry> droneDynamicsList = droneDynamics.fetchDroneDataById(droneId);
+                List<DroneDynamicEntry> droneDynamicsList = droneDynamics.fetchDroneData(droneId);
 
                 // Print the drone dynamics data (you can update this to display on GUI)
                 if (droneDynamicsList.isEmpty()) {
