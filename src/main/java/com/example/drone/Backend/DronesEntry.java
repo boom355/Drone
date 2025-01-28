@@ -18,6 +18,31 @@ public class DronesEntry {
         this.carriageType = carriageType;
     }
 
+
+    private double averageSpeed;
+    private double totalDistance;
+
+    public double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(double averageSpeed) {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public double getTotalDistance() {
+        return totalDistance;
+    }
+
+    public void setTotalDistance(double totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+
+
+
+
+
     // Getters
     public String getId() {
         return id;
@@ -47,6 +72,8 @@ public class DronesEntry {
     public String toString() {
         return "ID: " + id + ", DroneType: " + droneType + ", Created: " + createdDate +
                 ", Serial Number: " + serialNumber + ", Carriage Weight: " + carriageWeight +
-                " kg, Carriage Type: " + carriageType;
+                " kg, Carriage Type: " + carriageType +
+                ", Average Speed: " + averageSpeed + " km/h, Total Distance: " + totalDistance + " km" ;
     }
+
 }

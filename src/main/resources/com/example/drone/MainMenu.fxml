@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.drone.Frontend.MainMenuController">
     <Button layoutX="273.0" layoutY="90.0" mnemonicParsing="false" onAction="#goToDrones" text="Drones" />
     <Button layoutX="260.0" layoutY="161.0" mnemonicParsing="false" onAction="#goToDroneTypes" text="DroneTypes" />
     <Button layoutX="250.0" layoutY="235.0" mnemonicParsing="false" onAction="#goToDroneDynamics" text="DroneDynamics" />
-    <Button layoutX="237.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="127.0" text="Dashboard" />
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="30.0" prefHeight="17.0" prefWidth="100.0" text="DRONE" underline="true" wrapText="true">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Label>
+   <effect>
+      <ColorAdjust />
+   </effect>
 </Pane>

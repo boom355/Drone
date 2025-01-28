@@ -9,27 +9,23 @@ import java.util.List;
 public class DroneTypes {
     private static final String BASE_URL = "http://dronesim.facets-labs.com/api/dronetypes/?format=json";
 
-
-    public List<String> fetchDroneTypes() {
-        List<String> droneTypesList = new ArrayList<>();
+    // Fetches a list of DroneTypesEntry objects
+    public List<DroneTypesEntry> fetchDroneTypes() {
+        List<DroneTypesEntry> droneTypesList = new ArrayList<>();
         try {
+            // Fetch data from API
             String response = Api.fetchData(BASE_URL);
-            List<DroneTypesEntry> droneEntries = processCatalogData(response);
-
-            // Convert DroneTypesEntry objects to their string representation
-            for (DroneTypesEntry entry : droneEntries) {
-                droneTypesList.add(entry.toString());
-            }
+            // Process the data and populate the list
+            droneTypesList = processDroneTypesData(response);
         } catch (Exception e) {
             System.err.println("Error fetching drone catalog: " + e.getMessage());
         }
-        return droneTypesList;
+        return droneTypesList; // Return the list of DroneTypesEntry objects
     }
 
-
-
-    private List<DroneTypesEntry> processCatalogData(String jsonResponse) {
-        List<DroneTypesEntry> droneList = new ArrayList<>();
+    // Processes the JSON response and creates a list of DroneTypesEntry objects
+    private List<DroneTypesEntry> processDroneTypesData(String jsonResponse) {
+        List<DroneTypesEntry> droneTypesList = new ArrayList<>();
         JSONObject responseObject = new JSONObject(jsonResponse);
         JSONArray dronesArray = responseObject.getJSONArray("results");
 
@@ -39,15 +35,15 @@ public class DroneTypes {
                 String id = droneObject.optString("id", "Unknown");
                 String manufacturer = droneObject.optString("manufacturer", "Unknown");
                 String typename = droneObject.optString("typename", "Unknown");
-                double weight = droneObject.optDouble("weight", 0.0);
-                double maxSpeed = droneObject.optDouble("max_speed", 0.0);
-                double batteryCapacity = droneObject.optDouble("battery_capacity", 0.0);
-                double controlRange = droneObject.optDouble("control_range", 0.0);
-                double maxCarriage = droneObject.optDouble("max_carriage", 0.0);
+                double weight = droneObject.optDouble("weight");
+                double maxSpeed = droneObject.optDouble("max_speed");
+                double batteryCapacity = droneObject.optDouble("battery_capacity");
+                double controlRange = droneObject.optDouble("control_range");
+                double maxCarriage = droneObject.optDouble("max_carriage");
 
-                // Create DroneTypesEntry object
+                // Create a DroneTypesEntry object and add it to the list
                 DroneTypesEntry drone = new DroneTypesEntry(id, manufacturer, typename, weight, maxSpeed, batteryCapacity, controlRange, maxCarriage);
-                droneList.add(drone);
+                droneTypesList.add(drone);
             } catch (Exception e) {
                 System.err.println("Error parsing drone catalog data: " + e.getMessage());
             }
@@ -58,12 +54,12 @@ public class DroneTypes {
         if (nextPageUrl != null) {
             try {
                 String nextPageResponse = Api.fetchData(nextPageUrl);
-                droneList.addAll(processCatalogData(nextPageResponse));
+                droneTypesList.addAll(processDroneTypesData(nextPageResponse));
             } catch (Exception e) {
                 System.err.println("Error fetching next page of catalog data: " + e.getMessage());
             }
         }
 
-        return droneList;
+        return droneTypesList; // Return the list of DroneTypesEntry objects
     }
 }

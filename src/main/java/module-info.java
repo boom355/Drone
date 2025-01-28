@@ -4,6 +4,7 @@ module com.example.drone {
     requires org.json;
     requires java.net.http;
     requires java.desktop;
+    requires java.logging;
 
 
     opens com.example.drone.Frontend to javafx.fxml;

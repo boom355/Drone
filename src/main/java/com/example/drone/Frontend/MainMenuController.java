@@ -36,14 +36,13 @@ public class MainMenuController {
         Parent root = fxmlLoader.load();
 
         Scene scene = new Scene(root);
-        stage.setScene(scene);  // This causes the NullPointerException
+        stage.setScene(scene);
         stage.setTitle(title);
         stage.show();
 
-        // Optionally pass the stage to the new scene's controller
         Object controller = fxmlLoader.getController();
         if (controller instanceof MainMenuController nextController) {
-            nextController.setStage(stage);  // Make sure this is being done
+            nextController.setStage(stage);
         }
     }
 }
