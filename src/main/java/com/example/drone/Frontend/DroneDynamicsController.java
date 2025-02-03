@@ -21,8 +21,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Controller class for managing the interaction between the user interface and the drone dynamics data.
+ * This class is responsible for loading drone data, updating the table view, navigating between pages,
+ * and refreshing the data.
+ *
+ * @author [Your Name]
+ * @version 1.0
+ */
 public class DroneDynamicsController {
 
+    public Button refreshButton;
     @FXML
     private TableView<DroneDynamicEntry> droneTable;
 
@@ -33,10 +42,10 @@ public class DroneDynamicsController {
     private TableColumn<DroneDynamicEntry, Integer> speedColumn;
 
     @FXML
-    private TableColumn<DroneDynamicEntry, Double> rollColumn;
+    private TableColumn<DroneDynamicEntry, Double> alignRollColumn;
 
     @FXML
-    private TableColumn<DroneDynamicEntry, Double> yawColumn;
+    private TableColumn<DroneDynamicEntry, Double> alignYawColumn;
 
     @FXML
     private TableColumn<DroneDynamicEntry, Double> longitudeColumn;
@@ -57,7 +66,7 @@ public class DroneDynamicsController {
     private TableColumn<DroneDynamicEntry, String> lastSeenColumn;
 
     @FXML
-    private TableColumn<DroneDynamicEntry, Double> rangeColumn;
+    private TableColumn<DroneDynamicEntry, Double> cotrolRangeColumn;
 
     @FXML
     private Button loadDronesButton;
@@ -77,26 +86,30 @@ public class DroneDynamicsController {
 
     private static final String FIRST_PAGE_URL = "http://dronesim.facets-labs.com/api/dronedynamics/?format=json";
 
+    /**
+     * Initializes the controller. This method binds the table view columns to the properties of the
+     * {@link DroneDynamicEntry} class and configures the table's behavior.
+     */
     @FXML
     public void initialize() {
         // Bind the TableView columns to the DroneDynamicEntry properties
         timestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
         speedColumn.setCellValueFactory(new PropertyValueFactory<>("speed"));
-        rollColumn.setCellValueFactory(new PropertyValueFactory<>("alignRoll"));
-        yawColumn.setCellValueFactory(new PropertyValueFactory<>("alignYaw"));
+        alignRollColumn.setCellValueFactory(new PropertyValueFactory<>("alignRoll"));
+        alignYawColumn.setCellValueFactory(new PropertyValueFactory<>("alignYaw"));
         longitudeColumn.setCellValueFactory(new PropertyValueFactory<>("longitude"));
         latitudeColumn.setCellValueFactory(new PropertyValueFactory<>("latitude"));
         batteryColumn.setCellValueFactory(new PropertyValueFactory<>("batteryStatus"));
         batteryPercentageColumn.setCellValueFactory(new PropertyValueFactory<>("batteryPercentage"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         lastSeenColumn.setCellValueFactory(new PropertyValueFactory<>("lastSeen"));
-        rangeColumn.setCellValueFactory(new PropertyValueFactory<>("controlRange"));
+        cotrolRangeColumn.setCellValueFactory(new PropertyValueFactory<>("controlRange"));
 
         // Disable the previous button initially
         previousButton.setDisable(true);
 
         // Set the cell factory to change row color based on battery percentage
-        batteryPercentageColumn.setCellFactory(column -> new TableCell<>() {
+        batteryPercentageColumn.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(Integer batteryPercentage, boolean empty) {
                 super.updateItem(batteryPercentage, empty);
@@ -115,6 +128,9 @@ public class DroneDynamicsController {
         });
     }
 
+    /**
+     * Loads the drone data for the first page when the "Load Drones" button is clicked.
+     */
     @FXML
     private void onLoadDronesClicked() {
         try {
@@ -124,11 +140,17 @@ public class DroneDynamicsController {
         }
     }
 
+    /**
+     * Refreshes the current drone data when the "Refresh" button is clicked.
+     */
     @FXML
     private void onRefreshClicked() {
         refreshData();
     }
 
+    /**
+     * Loads the next page of drone data when the "Next" button is clicked.
+     */
     @FXML
     private void onNextClicked() {
         try {
@@ -141,6 +163,9 @@ public class DroneDynamicsController {
         }
     }
 
+    /**
+     * Loads the previous page of drone data when the "Previous" button is clicked.
+     */
     @FXML
     private void onPreviousClicked() {
         try {
@@ -153,6 +178,9 @@ public class DroneDynamicsController {
         }
     }
 
+    /**
+     * Navigates to the main menu when the "Home" button is clicked.
+     */
     @FXML
     private void onHomeClicked() {
         try {
@@ -173,6 +201,11 @@ public class DroneDynamicsController {
         }
     }
 
+    /**
+     * Loads the drone data for a given page URL and updates the table with the new data.
+     *
+     * @param pageUrl The URL of the page containing drone data to be loaded.
+     */
     private void loadDroneData(String pageUrl) {
         try {
             List<DroneDynamicEntry> droneData = droneDynamics.fetchDroneData(pageUrl);
@@ -187,6 +220,9 @@ public class DroneDynamicsController {
         }
     }
 
+    /**
+     * Refreshes the drone data by fetching the updated data from the backend.
+     */
     private void refreshData() {
         try {
             logger.info("Refreshing drone data...");
@@ -201,11 +237,17 @@ public class DroneDynamicsController {
         }
     }
 
+    /**
+     * Updates the states of the "Previous" and "Next" buttons based on the availability of the previous and next pages.
+     */
     private void updateButtonStates() {
         previousButton.setDisable(droneDynamics.getPreviousPage() == null);
         nextButton.setDisable(droneDynamics.getNextPage() == null);
     }
 
+    /**
+     * Updates the displayed average battery percentage of all drones in the current table.
+     */
     private void updateAverageBattery() {
         double totalBattery = 0;
         int droneCount = observableList.size();

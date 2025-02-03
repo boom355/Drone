@@ -11,8 +11,24 @@ import java.util.List;
 import com.example.drone.Backend.Drones;
 import com.example.drone.Backend.DronesEntry;
 
+/**
+ * The main application class that starts the Drone Application with the Main Menu.
+ * It loads the Main Menu UI and fetches drone data asynchronously in the background.
+ * <p>
+ * This class is responsible for setting up the main window of the application by loading
+ * the FXML for the Main Menu and initiating the background task to fetch drone data.
+ * </p>
+ */
 public class MainMenuApplication extends Application {
 
+    /**
+     * The entry point for launching the Main Menu of the Drone Application.
+     * This method loads the FXML for the Main Menu, sets up the stage, and starts the background task
+     * to fetch drone data.
+     *
+     * @param stage The primary stage for this application, onto which the scene will be set.
+     * @throws IOException If there is an error loading the FXML file for the Main Menu.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         // Load the Main Menu FXML
@@ -32,6 +48,12 @@ public class MainMenuApplication extends Application {
         stage.show();
     }
 
+    /**
+     * Fetches drone data in the background using a separate thread.
+     * The task fetches data asynchronously using the `Drones` class.
+     * Once the task completes successfully, it processes the fetched drone data.
+     * In case of failure, it logs the error message.
+     */
     private void fetchDataInBackground() {
         // Task for fetching drone data in a separate thread
         Task<List<DronesEntry>> task = new Task<>() {
@@ -62,6 +84,12 @@ public class MainMenuApplication extends Application {
         thread.start();
     }
 
+    /**
+     * The main method for the Drone Application.
+     * It launches the application by invoking the `launch()` method of the JavaFX `Application` class.
+     *
+     * @param args The command-line arguments passed to the application (not used in this case).
+     */
     public static void main(String[] args) {
         launch();
     }

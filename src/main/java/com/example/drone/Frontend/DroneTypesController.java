@@ -16,8 +16,21 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller for managing the Drone Types catalog. This class is responsible for handling the user
+ * interactions related to displaying and managing drone types in the application.
+ * It communicates with the backend to fetch drone types and display them in a TableView.
+ * <p>
+ * The controller uses the DroneTypes backend service to fetch data and populate the UI components
+ * like the TableView with drone types. It also handles navigation and refresh operations for the user.
+ * </p>
+ *
+ * @author [Your Name]
+ * @version 1.0
+ */
 public class DroneTypesController {
 
+    // FXML components
     @FXML
     private TableView<DroneTypesEntry> droneTable;
 
@@ -45,8 +58,17 @@ public class DroneTypesController {
     @FXML
     private TableColumn<DroneTypesEntry, Double> maxCarriageColumn;
 
+    // Backend connection
     private final DroneTypes droneTypesBackend = new DroneTypes();
 
+    /**
+     * Initializes the controller by binding the table columns to the properties
+     * of the DroneTypesEntry objects.
+     * <p>
+     * This method is called when the FXML is loaded and ensures that the TableView
+     * columns are properly connected to the fields of the DroneTypesEntry class.
+     * </p>
+     */
     @FXML
     public void initialize() {
         // Bind table columns to DroneTypesEntry fields
@@ -58,14 +80,28 @@ public class DroneTypesController {
         batteryCapacityColumn.setCellValueFactory(new PropertyValueFactory<>("batteryCapacity"));
         controlRangeColumn.setCellValueFactory(new PropertyValueFactory<>("controlRange"));
         maxCarriageColumn.setCellValueFactory(new PropertyValueFactory<>("maxCarriage"));
+    }
 
-        }
-
+    /**
+     * Refreshes the table by calling the loadDrones() method to reload the drone data.
+     * <p>
+     * This method is typically invoked when the user clicks a refresh button. It reloads
+     * the drone data from the backend and updates the table.
+     * </p>
+     */
     @FXML
     public void refreshButton() {
         loadDrones(); // Re-load the data by calling the loadDrones method
     }
 
+    /**
+     * Handles the action when the "Home" button is clicked. It loads the main menu scene.
+     * <p>
+     * This method is responsible for navigating to the main menu of the application
+     * when the user clicks the "Home" button.
+     * </p>
+     *
+     */
     @FXML
     private void onHomeClicked() {
         try {
@@ -92,10 +128,17 @@ public class DroneTypesController {
         }
     }
 
+    /**
+     * Loads the drone types data from the backend and populates the table with the fetched data.
+     * <p>
+     * This method communicates with the backend service to retrieve the list of drone types
+     * and then populates the TableView with the fetched data.
+     * </p>
+     */
     @FXML
     public void loadDrones() {
         try {
-            // Fetch list of drones from backend
+            // Fetch list of drone types from backend
             List<DroneTypesEntry> droneTypesList = droneTypesBackend.fetchDroneTypes();
             ObservableList<DroneTypesEntry> observableDroneList = FXCollections.observableArrayList(droneTypesList);
 
