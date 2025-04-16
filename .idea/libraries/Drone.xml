@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Drone">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Drone/out/artifacts/Drone_jar/Drone.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
